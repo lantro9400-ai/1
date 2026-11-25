@@ -1,0 +1,109 @@
+{#- 회사 기획안 플랫폼에 섹션별로 옮겨 적기 쉽게, 표 대신 "라벨: 값" 형태로 출력 -#}
+# {{ p.title }}
+({{ p.corner }} · {{ p.topic }})
+
+## 표지
+제목(가안): {{ p.title }}
+{%- for t in p.alt_titles %}
+다른 안 {{ loop.index }}: {{ t }}
+{%- endfor %}
+
+채널명: {{ c.channel_name }}
+담당 PD: {{ c.pd }}
+촬영감독: {{ c.director }}
+발행일: {{ c.publish_date }}
+촬영 날짜: {{ c.shoot_date }}
+촬영 장소: {{ c.location }}
+콜타임: {{ c.call_time }}
+주차 안내: {{ c.parking }}
+{%- for label, value in c.extras.items() %}
+{{ label }}: {{ value }}
+{%- endfor %}
+
+## 타임테이블
+{%- for s in p.timetable %}
+{{ s.time }}  {{ s.activity }}{% if s.note %}  ({{ s.note }}){% endif %}
+{%- endfor %}
+
+## CONTENT NOTE
+채널 내러티브와의 연결성
+{{ p.narrative_link }}
+
+시청자에게 줄 수 있는 것
+{%- for b in p.viewer_benefits %}
+· {{ b }}
+{%- endfor %}
+
+기대하는 시청자 반응
+{%- for cmt in p.expected_comments %}
+· {{ cmt }}
+{%- endfor %}
+
+썸네일 후보
+{%- for t in p.thumbnail_ideas %}
+{{ loop.index }}안  {{ t.copy_text }} — {{ t.visual }}
+{%- endfor %}
+
+출연자의 역할
+{{ p.cast_role }}
+
+PD의 역할
+{{ p.pd_role }}
+
+## 썸네일 레퍼런스
+{{ p.thumbnail_reference }}
+{% for sc in p.scenes %}
+## FLOW / {{ sc.title }}
+{{ sc.summary }}
+{% for item in sc.composition %}
+- {{ item }}
+{%- endfor %}
+
+대사 예시
+{%- for b in sc.blocks %}{% if sc.blocks|length > 1 %}
+
+[ {{ b.name }} ]{% endif %}
+{%- for line in b.line_examples %}
+{{ line }}
+{%- endfor %}
+{%- endfor %}
+
+PD 질문 혹은 역할
+{%- for b in sc.blocks %}{% if sc.blocks|length > 1 %}
+
+[ {{ b.name }} ]{% endif %}
+{%- for q in b.pd_questions %}
+· {{ q }}
+{%- endfor %}
+{%- endfor %}
+
+이미지: {{ sc.image_note }}
+{% endfor %}
+## 샷
+{%- for s in p.shots %}
+{{ s.camera }}: {{ s.description }}
+{%- endfor %}
+
+## PRODUCTION
+최종 체크
+{%- for line in p.production_checks %}
+{{ line }}
+{%- endfor %}
+
+검토 상태: {{ p.review_status }}
+
+## 제작 일정
+{%- for s in p.schedule %}
+{{ s.step }}: {{ s.date }}
+{%- endfor %}
+
+---
+## 비워 둔 항목
+{%- for b in p.blank_items %}
+· {{ b }}
+{%- endfor %}
+
+## 셰프님 확인이 필요한 부분
+{%- for ch in p.chef_checks %}
+· {{ ch.item }} — {{ ch.reason }}
+{%- endfor %}
